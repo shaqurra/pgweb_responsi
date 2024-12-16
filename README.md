@@ -1,7 +1,3 @@
-Berikut adalah README tanpa gambar untuk proyek **JOGJAKUL - Website Persebaran Kampus di Yogyakarta**:
-
----
-
 # **JOGJAKUL - Website Persebaran Kampus di Yogyakarta**
 
 **JOGJAKUL** adalah website yang menyediakan informasi tentang kampus-kampus di Yogyakarta, termasuk informasi tentang lokasi, fasilitas, dan berbagai data relevan lainnya. Website ini bertujuan untuk mempermudah pengguna dalam mencari informasi seputar kampus yang ada di Yogyakarta.
