@@ -101,7 +101,7 @@ Berikut adalah penjelasan mengenai struktur file dalam proyek ini:
    ![jenis](https://github.com/user-attachments/assets/aa0dc457-d988-42c7-b76a-817988bd74c8)
 
 7. Tangkapan Layar Peta
-   ![peta](https://github.com/user-attachments/assets/bb7811d6-871e-444e-8a96-942b4faf6042)
+   ![peta](https://github.com/user-attachments/assets/148a4b1f-1c4f-4620-949b-d5a768527dc7)
 
 9. Tangkapan Layar Data Kampus
    ![data](https://github.com/user-attachments/assets/bea92256-d51b-4f9a-9b36-a32b7a226261)
