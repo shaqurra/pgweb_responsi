@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOGJAKUL: Sleman Lokasi Edukasi Bangunan Wawasan Anak Negeri</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #map {
+            width: 100%;
+            height: 500px;
+        }
+
+        /* Pop-up Info */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .popup-header {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .popup-content {
+            margin-bottom: 20px;
+        }
+
+        .popup .close-btn {
+            display: block;
+            text-align: center;
+            background-color: #f7c1d9;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .popup .close-btn:hover {
+            background-color: #e4b0bb;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .overlay.active,
+        .popup.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="icon/collage.png" alt="Logo JOGJAKUL" class="logo">
+                JOGJAKUL
+            </a>
+            <ul class="navbar-nav">
+                <li><a href="#about">JOGJAKUL</a></li>
+                <li><a href="#services">Layanan</a></li>
+                <li><a href="data.php" target="_blank">Data</a></li>
+                <li><a href="#contact">Kontak</a></li>
+                <li><a href="info.html">Info Pembuat</a></li>
+                <li><a href="grafik.html">Grafik Persentase</a></li> <!-- Tautan baru untuk grafik -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Pop-up Info -->
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="info-popup">
+        <div class="popup-header">Info Pembuat</div>
+        <div class="popup-content">
+            <div class="text-center mb-3">
+                <img src="gambar/profile.png" alt="Foto Profil"
+                    style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>Nama</th>
+                        <td>Shaqurra</td>
+                    </tr>
+                    <tr>
+                        <th>NIM</th>
+                        <td>23/520668/SV/23277</td>
+                    </tr>
+                    <tr>
+                        <th>Kelas</th>
+                        <td>B</td>
+                    </tr>
+                    <tr>
+                        <th>Github</th>
+                        <td><a href="https://github.com/shaqurra" target="_blank">shaqurra</a></td>
+                    </tr>
+                    <tr>
+                        <th>Instagram</th>
+                        <td><a href="https://www.instagram.com/shafaaqurrata" target="_blank">@shafaaqurrata</a></td>
+                    </tr>
+                </table>
+            </div>
+            <a href="#" class="close-btn" id="close-popup">Tutup</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header
+        style="background-image: url('gambar/univ.jpg'); background-size: cover; background-position: center; height: 100vh; color: white;">
+        <div class="container" style="background-color: rgba(0, 0, 0, 0.5); padding: 20px;">
+            <h1>JOGJAKUL</h1>
+            <p><strong>Jogja Kampus Kuliah</strong></p>
+            <p>Portal edukasi yang memperkenalkan dan menyebarkan informasi mengenai persebaran bangunan pendidikan di
+                Provinsi Yogyakarta.</p>
+            <a href="#about" class="btn">Jelajahi Sekarang</a>
+        </div>
+    </header>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- About Section -->
+<section id="about" class="section" style="font-family: 'Roboto', sans-serif; background-color: #ffe6f0; padding: 50px 0;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <img src="gambar/DIY.jpg" alt="Gedung Pendidikan" class="img-fluid rounded" style="border: 5px solid #f7c1d9;">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="section-title" style="
+                    font-family: 'Poppins', sans-serif; 
+                    font-weight: 700; 
+                    color: #ff85a2; 
+                    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);">
+                    Tentang JOGJAKUL
+                </h2>
+                <p style="
+                    font-size: 16px; 
+                    line-height: 1.8; 
+                    color: #333; 
+                    text-align: justify;">
+                    JOGJAKUL (Jogja Kampus Kuliah) adalah platform inovatif yang bertujuan untuk memberikan informasi
+                    komprehensif mengenai persebaran institusi pendidikan tinggi di Provinsi Yogyakarta. Kami berfokus
+                    pada universitas, akademi, institut, politeknik, dan sekolah tinggi. Dengan desain interaktif dan
+                    akses mudah melalui peta digital, JOGJAKUL hadir sebagai teman eksplorasi yang membantu menemukan
+                    pilihan kampus terbaik sesuai kebutuhan Anda.
+                </p>
+                <p style="
+                    font-size: 16px; 
+                    line-height: 1.8; 
+                    color: #333; 
+                    text-align: justify;">
+                    Yogyakarta, sebagai kota pelajar, menjadi rumah bagi berbagai lembaga pendidikan ternama. Dengan
+                    JOGJAKUL, informasi mengenai lokasi, fasilitas, serta reputasi kampus dapat diakses secara cepat dan
+                    mudah. Platform ini didesain untuk mendukung calon mahasiswa, peneliti, dan akademisi dalam memilih
+                    lembaga pendidikan yang tepat.
+                </p>
+
+                <!-- Buttons -->
+                <div style="margin-top: 20px;">
+                    <a href="#services" class="btn" style="
+                        background-color: #ff85a2; 
+                        color: #fff; 
+                        padding: 10px 20px; 
+                        border-radius: 8px; 
+                        text-decoration: none; 
+                        font-weight: 600;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                        Pelajari Layanan Kami
+                    </a>
+                    <a href="data.php" class="btn" style="
+                        background-color: #f7c1d9; 
+                        color: #fff; 
+                        padding: 10px 20px; 
+                        border-radius: 8px; 
+                        text-decoration: none; 
+                        font-weight: 600;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                        Lihat Data
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+    <!-- Services Section -->
+    <section id="services" class="section services">
+        <div class="container">
+            <h2>Layanan Kami</h2>
+            <div class="row">
+                <!-- Cards -->
+                <div class="col">
+                    <div class="card" onclick="window.location.href='map.html'">
+                        <img src="gambar/univ.jpg" alt="Universitas">
+                        <h3>Universitas</h3>
+                        <p>Menampilkan informasi tentang universitas yang ada di Yogyakarta, memberikan akses untuk
+                            mengeksplorasi lebih lanjut melalui peta.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" onclick="window.location.href='map.html'">
+                        <img src="gambar/akademi.jpg" alt="Akademi">
+                        <h3>Akademi</h3>
+                        <p>Menyediakan informasi tentang akademi di Yogyakarta, memungkinkan pengunjung untuk melihat
+                            lebih detail melalui peta.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" onclick="window.location.href='map.html'">
+                        <img src="gambar/sekolahtinggi.jpg" alt="sekolahtinggi">
+                        <h3>Sekolah Tinggi</h3>
+                        <p>Menyediakan informasi terkait sekolah tinggi yang ada di Yogyakarta, dilengkapi dengan link
+                            untuk menjelajahi lokasi lebih lanjut.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" onclick="window.location.href='map.html'">
+                        <img src="gambar/politeknik.jpg" alt="Politeknik">
+                        <h3>Politeknik</h3>
+                        <p>Menyajikan informasi tentang politeknik di Yogyakarta, termasuk akses untuk melihat lebih
+                            banyak informasi di peta.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" onclick="window.location.href='map.html'">
+                        <img src="gambar/ISI.jpg" alt="Institut">
+                        <h3>Institut</h3>
+                        <p>Menampilkan informasi tentang institut yang ada di Yogyakarta, dengan opsi untuk
+                            menjelajahi lokasi lebih lanjut melalui peta.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Section -->
+    <section id="data-section">
+        <div class="container">
+            <h2>Data Kampus</h2>
+            <iframe src="Data.php" style="width: 100%; height: 500px; border: none;"></iframe>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>Kontak Kami</h2>
+            <form action="submit_form.php" method="POST">
+                <div class="form-group">
+                    <input type="text" placeholder="Nama Anda" required>
+                </div>
+                <button type="submit" class="btn">Kirim Pesan</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 JOGJAKUL. Semua Hak Dilindungi.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        const infoTrigger = document.getElementById("info-trigger");
+        const infoPopup = document.getElementById("info-popup");
+        const overlay = document.getElementById("overlay");
+        const closePopup = document.getElementById("close-popup");
+
+        if (infoTrigger && infoPopup && overlay && closePopup) {
+            infoTrigger.addEventListener("click", function (e) {
+                e.preventDefault();
+                infoPopup.classList.add("active");
+                overlay.classList.add("active");
+            });
+
+            closePopup.addEventListener("click", function (e) {
+                e.preventDefault();
+                infoPopup.classList.remove("active");
+                overlay.classList.remove("active");
+            });
+
+            overlay.addEventListener("click", function () {
+                infoPopup.classList.remove("active");
+                overlay.classList.remove("active");
+            });
+        }
+
+
+
+    </script>
+</body>
+
+</html>

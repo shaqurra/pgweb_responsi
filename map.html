@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peta DIY</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f0f4f8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        #title {
+            text-align: center;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 80px; /* Memberikan ruang untuk navbar fixed */
+        }
+
+        #title h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #map-container {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+
+        }
+
+        #map {
+            width: 100%;
+            height: 600px;
+            border-radius: 15px;
+        }
+
+        .legend {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            line-height: 1.6em;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .legend i {
+            display: inline-block;
+            width: 20px;
+            height: 10px;
+            margin-right: 10px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Menyisipkan navbar -->
+<div id="navbar"></div>
+
+<div class="container">
+    <div id="title">
+        <h1>Peta Persebaran Kampus DIY</h1>
+    </div>
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+</div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // Memuat Navbar secara dinamis
+        function loadNavbar() {
+            const navbarContainer = document.getElementById('navbar');
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    navbarContainer.innerHTML = data;
+                });
+        }
+        window.onload = loadNavbar;  // Memanggil fungsi saat halaman dimuat
+
+        // Inisialisasi peta
+        var map = L.map("map").setView([-7.797068, 110.370529], 10); // Fokus ke DIY
+
+        // Basemaps
+        var osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: '&copy; OpenStreetMap contributors'
+        });
+        var esriWorld = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
+            attribution: '&copy; Esri World Street Map'
+        });
+        var cartoPositron = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+            attribution: '&copy; CartoDB'
+        });
+        var stamenTerrain = L.tileLayer("https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg", {
+            attribution: '&copy; Stamen Terrain'
+        });
+        var satellite = L.tileLayer("https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            attribution: '&copy; Google Satellite'
+        });
+
+        // Tambahkan basemap default
+        osm.addTo(map);
+
+        // Warna berdasarkan Kabupaten di DIY
+        var kabupatenColors = {
+            "Sleman": "#FFC300",
+            "Kota Yogyakarta": "#DAF7A6",
+            "Bantul": "#FF5733",
+            "Kulon Progo": "#3498DB",
+            "Gunung Kidul": "#9B59B6"
+        };
+
+        function styleKabupaten(feature) {
+            return {
+                color: "#000", // Batas warna hitam
+                weight: 1,
+                fillColor: kabupatenColors[feature.properties.WADMKK] || "#808080",
+                fillOpacity: 0.7
+            };
+        }
+
+        // GeoJSON untuk batas administrasi
+        var batasAdministrasi = L.geoJSON(null, {
+            style: styleKabupaten,
+            onEachFeature: function (feature, layer) {
+                layer.bindTooltip(feature.properties.WADMKK, { sticky: true });
+            }
+        });
+        fetch('data/diy.geojson')
+            .then(res => res.json())
+            .then(data => batasAdministrasi.addData(data).addTo(map));
+
+        // GeoJSON untuk data jalan
+        var dataJalan = L.geoJSON(null, {
+            style: function (feature) {
+                return {
+                    color: "#FF0000",
+                    weight: 2
+                };
+            },
+            onEachFeature: function (feature, layer) {
+                layer.bindTooltip(feature.properties.name || "Jalan", { sticky: true });
+            }
+        });
+        fetch('data/jalan_kolektor_diy.geojson')
+            .then(res => res.json())
+            .then(data => dataJalan.addData(data).addTo(map));
+
+        // Icon marker kampus
+        var iconJenis = {
+            "Universitas": L.icon({ iconUrl: "icon/univ.png", iconSize: [25, 25], iconAnchor: [12, 25], popupAnchor: [0, -25] }),
+            "Sekolah Tinggi": L.icon({ iconUrl: "icon/sekolahtinggi.png", iconSize: [25, 25], iconAnchor: [12, 25], popupAnchor: [0, -25] }),
+            "Politeknik": L.icon({ iconUrl: "icon/politeknik.png", iconSize: [25, 25], iconAnchor: [12, 25], popupAnchor: [0, -25] }),
+            "Akademi": L.icon({ iconUrl: "icon/akademi.png", iconSize: [25, 25], iconAnchor: [12, 25], popupAnchor: [0, -25] }),
+            "Institut": L.icon({ iconUrl: "icon/institut.png", iconSize: [25, 25], iconAnchor: [12, 25], popupAnchor: [0, -25] })
+        };
+
+        // GeoJSON untuk persebaran kampus
+        var kampusDIY = L.geoJSON(null, {
+            pointToLayer: function (feature, latlng) {
+                var kampusIcon = iconJenis[feature.properties.jenis] || iconJenis["Universitas"];
+                return L.marker(latlng, { icon: kampusIcon });
+            },
+            onEachFeature: function (feature, layer) {
+                var popupContent = `<b>${feature.properties.Nama_Kampu}</b><br>
+                                   Jenis: ${feature.properties.jenis}`;
+                layer.bindPopup(popupContent);
+            }
+        });
+        fetch('data/kampus_diy.geojson')
+            .then(res => res.json())
+            .then(data => kampusDIY.addData(data).addTo(map));
+
+        // Control Layer
+        var baseLayers = {
+            "OpenStreetMap": osm,
+            "Esri WorldStreet": esriWorld,
+            "Carto Positron": cartoPositron,
+            "Stamen Terrain": stamenTerrain,
+            "Google Satellite": satellite
+        };
+
+        var overlays = {
+            "Batas Administrasi": batasAdministrasi,
+            "Data Jalan": dataJalan,
+            "Persebaran Kampus": kampusDIY
+        };
+
+        L.control.layers(baseLayers, overlays).addTo(map);
+
+        // Legend
+        var legend = L.control({ position: "bottomright" });
+
+        legend.onAdd = function () {
+            var div = L.DomUtil.create("div", "legend");
+            div.innerHTML = `<b>Legenda</b><br>`;
+            for (let kabupaten in kabupatenColors) {
+                div.innerHTML += `<i style="background:${kabupatenColors[kabupaten]}"></i>${kabupaten}<br>`;
+            }
+            div.innerHTML += `<img src="icon/univ.png" width="15"> Persebaran Kampus<br>`;
+            div.innerHTML += `<span style="color:#FF0000; font-weight:bold;">&#8212; Data Jalan</span>`;
+            return div;
+        };
+
+        legend.addTo(map);
+    </script>
+</body>
+
+</html>
