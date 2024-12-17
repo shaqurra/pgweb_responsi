@@ -38,8 +38,8 @@ Halaman ini memberikan informasi tentang pembuat website **JOGJAKUL**, termasuk 
 Halaman ini menampilkan peta interaktif lokasi kampus-kampus di Yogyakarta menggunakan data dari sumber tepercaya.
 
 Sumber Data:
-LapakGIS: Shapefile Gratis Provinsi Yogyakarta
-ArcGIS: Campus Data
+1. LapakGIS: Shapefile Gratis Provinsi Yogyakarta
+2. ArcGIS: Campus Data
 
 ## **Desain Website**
 Website ini didesain dengan menggunakan HTML dan CSS untuk memastikan tampilan yang responsif dan mudah digunakan di berbagai perangkat. Beberapa fitur desain utama yang diterapkan termasuk:
