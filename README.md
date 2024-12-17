@@ -34,7 +34,7 @@ Halaman ini memberikan informasi tentang pembuat website **JOGJAKUL**, termasuk 
 
 ---
 
-3. Peta Persebaran Kampus
+### **3. Peta Persebaran Kampus (peta_persebaran.html)**
 Halaman ini menampilkan peta interaktif lokasi kampus-kampus di Yogyakarta menggunakan data dari sumber tepercaya.
 
 Sumber Data:
